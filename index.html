@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Storybook English: The Magic Forest</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nanum+Gothic:wght@700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(135deg, #fce4ec 0%, #e8eaf6 100%);
+      font-family: 'Nanum Gothic', 'Fredoka One', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    /* Header */
+    header {
+      width: 90%;
+      max-width: 800px;
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffffff;
+      padding: 12px 25px;
+      border-radius: 25px;
+      box-shadow: 0 6px 0 #c5cae9;
+      border: 3px solid #7986cb;
+    }
+
+    .book-title {
+      font-size: 22px;
+      color: #3f51b5;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .progress-text {
+      font-size: 18px;
+      color: #5c6bc0;
+      font-weight: 800;
+    }
+
+    /* Story Book Main Card */
+    main {
+      width: 90%;
+      max-width: 750px;
+      height: 68vh;
+      background: #ffffff;
+      border-radius: 35px;
+      border: 6px solid #5c6bc0;
+      box-shadow: 0 12px 0 #3f51b5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 25px;
+      position: relative;
+    }
+
+    /* Scene Illustration Box */
+    .scene-box {
+      width: 100%;
+      height: 45%;
+      background: #eef2f3;
+      border-radius: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      border: 3px dashed #9fa8da;
+      box-shadow: inset 0 4px 8px rgba(0,0,0,0.05);
+      position: relative;
+    }
+
+    .listen-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #c2185b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.1s;
+    }
+
+    .listen-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #c2185b;
+    }
+
+    /* Story Sentence Area */
+    .sentence-container {
+      width: 100%;
+      font-size: 28px;
+      font-weight: 800;
+      color: #2c3e50;
+      text-align: center;
+      line-height: 1.6;
+      margin: 15px 0;
+      word-break: keep-all;
+    }
+
+    /* Options Area */
+    .options-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 10px;
+    }
+
+    .option-btn {
+      padding: 14px 28px;
+      font-size: 24px;
+      font-weight: 800;
+      color: #3f51b5;
+      background: #e8eaf6;
+      border: 3px solid #7986cb;
+      border-radius: 20px;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #9fa8da;
+      transition: all 0.2s;
+    }
+
+    .option-btn:hover {
+      background: #c5cae9;
+    }
+
+    .option-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #9fa8da;
+    }
+
+    /* Result Modal */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.65);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 100;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .result-box {
+      background: white;
+      padding: 35px;
+      border-radius: 35px;
+      text-align: center;
+      max-width: 480px;
+      width: 85%;
+      border: 6px solid #7986cb;
+      box-shadow: 0 10px 0 #3f51b5;
+    }
+
+    .result-title {
+      font-size: 30px;
+      color: #303f9f;
+      margin-bottom: 15px;
+    }
+
+    .restart-btn {
+      padding: 14px 35px;
+      font-size: 22px;
+      font-weight: 800;
+      background: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 6px 0 #c2185b;
+      cursor: pointer;
+      transition: transform 0.1s;
+      margin-top: 15px;
+    }
+
+    .restart-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #c2185b;
+    }
+
+    /* Animations */
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      75% { transform: translateX(8px); }
+      100% { transform: translateX(0); }
+    }
+
+    .animate-shake {
+      animation: shake 0.4s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="book-title">📖 Teddy's Forest Adventure</div>
+    <div class="progress-text" id="progress-text">Page 1 / 8</div>
+  </header>
+
+  <main id="main-card">
+    <div class="scene-box" id="scene-box">
+      <span id="scene-emoji">🐻</span>
+      <button class="listen-btn" title="문장 전체 듣기" onclick="readCurrentSentence()">🔊</button>
+    </div>
+
+    <div class="sentence-container" id="sentence-container">
+      Loading story...
+    </div>
+
+    <div class="options-container" id="options-container">
+      <!-- 동적으로 옵션 버튼 생성 -->
+    </div>
+  </main>
+
+  <!-- Story Complete Modal -->
+  <div class="overlay" id="result-modal">
+    <div class="result-box">
+      <div class="result-title">🎉 The End! 🎉</div>
+      <div style="font-size: 70px; margin: 10px 0;">🌟🐻📚</div>
+      <p style="font-size: 20px; color: #555; line-height: 1.5;">
+        멋져요! 테디의 숲속 탐험 이야기를 모두 완성했어요!
+      </p>
+      <button class="restart-btn" onclick="initStory()">처음부터 다시 읽기 🔄</button>
+    </div>
+  </div>
+
+  <script>
+    const storyPages = [
+      {
+        emoji: "🐻🧺",
+        sentencePrefix: "Little Teddy walks into the forest with ",
+        sentenceSuffix: ".",
+        options: ["a basket", "baskets"],
+        correct: "a basket",
+        fullText: "Little Teddy walks into the forest with a basket."
+      },
+      {
+        emoji: "🍎🍎🍎",
+        sentencePrefix: "He finds three red ",
+        sentenceSuffix: " under the tree.",
+        options: ["apple", "apples"],
+        correct: "apples",
+        fullText: "He finds three red apples under the tree."
+      },
+      {
+        emoji: "🐱",
+        sentencePrefix: "Suddenly, ",
+        sentenceSuffix: " jumps out from the bushes!",
+        options: ["a cat", "cats"],
+        correct: "a cat",
+        fullText: "Suddenly, a cat jumps out from the bushes!"
+      },
+      {
+        emoji: "📦📦",
+        sentencePrefix: "The cat shows Teddy two magic ",
+        sentenceSuffix: ".",
+        options: ["box", "boxes"],
+        correct: "boxes",
+        fullText: "The cat shows Teddy two magic boxes."
+      },
+      {
+        emoji: "📖",
+        sentencePrefix: "Inside the first box, there is ",
+        sentenceSuffix: ".",
+        options: ["a book", "books"],
+        correct: "a book",
+        fullText: "Inside the first box, there is a book."
+      },
+      {
+        emoji: "🍌🍌🍌🍌",
+        sentencePrefix: "In the second box, there are four ",
+        sentenceSuffix: "!",
+        options: ["banana", "bananas"],
+        correct: "bananas",
+        fullText: "In the second box, there are four bananas!"
+      },
+      {
+        emoji: "🚌",
+        sentencePrefix: "They jump on ",
+        sentenceSuffix: " and go home together.",
+        options: ["a bus", "buses"],
+        correct: "a bus",
+        fullText: "They jump on a bus and go home together."
+      },
+      {
+        emoji: "🏠✨",
+        sentencePrefix: "What a happy day for ",
+        sentenceSuffix: "!",
+        options: ["a bear", "two friends"],
+        correct: "two friends",
+        fullText: "What a happy day for two friends!"
+      }
+    ];
+
+    let currentPage = 0;
+    const TOTAL_PAGES = storyPages.length;
+
+    const sceneEmoji = document.getElementById('scene-emoji');
+    const sentenceContainer = document.getElementById('sentence-container');
+    const optionsContainer = document.getElementById('options-container');
+    const progressText = document.getElementById('progress-text');
+    const mainCard = document.getElementById('main-card');
+    const resultModal = document.getElementById('result-modal');
+
+    // TTS 음성 읽기 함수
+    function speakText(text, onEndCallback) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.82; // 초등 3학년 대상 천천히 또박또박 읽기
+        
+        if (onEndCallback) {
+          utterance.onend = onEndCallback;
+        }
+        
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    // 우측 상단 소리 버튼 클릭 시 재생
+    function readCurrentSentence() {
+      const page = storyPages[currentPage];
+      speakText(page.fullText);
+    }
+
+    function initStory() {
+      currentPage = 0;
+      resultModal.classList.remove('active');
+      loadPage();
+    }
+
+    function loadPage() {
+      if (currentPage >= TOTAL_PAGES) {
+        endStory();
+        return;
+      }
+
+      const page = storyPages[currentPage];
+
+      // UI 업데이트
+      progressText.textContent = `Page ${currentPage + 1} / ${TOTAL_PAGES}`;
+      sceneEmoji.textContent = page.emoji;
+
+      // 빈칸 문장 생성
+      sentenceContainer.innerHTML = `${page.sentencePrefix} <span style="color:#ff4081; border-bottom: 3px dashed #ff4081; padding: 0 10px;">???</span> ${page.sentenceSuffix}`;
+
+      // 선택지 버튼 생성
+      optionsContainer.innerHTML = '';
+      page.options.forEach(option => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = option;
+        btn.onclick = () => selectOption(option, page);
+        optionsContainer.appendChild(btn);
+      });
+      
+      // 자동 음성 재생 삭제됨 (사용자가 버튼을 누르거나 단어를 고를 때만 음성 출력)
+    }
+
+    function selectOption(selectedOption, page) {
+      if (selectedOption === page.correct) {
+        // 정답 시 문장 완성 및 전체 문장 음성 재생 후 다음 페이지로 이동
+        sentenceContainer.innerHTML = `${page.sentencePrefix} <span style="color:#2e7d32; font-weight:900;">${page.correct}</span> ${page.sentenceSuffix}`;
+        
+        speakText(page.fullText, () => {
+          setTimeout(() => {
+            currentPage++;
+            loadPage();
+          }, 300);
+        });
+      } else {
+        // 오답 시 선택한 단어의 소리만 재생하여 오답 유도
+        mainCard.classList.add('animate-shake');
+        speakText(selectedOption);
+        setTimeout(() => {
+          mainCard.classList.remove('animate-shake');
+        }, 500);
+      }
+    }
+
+    function endStory() {
+      resultModal.classList.add('active');
+      speakText("The end! Great job!");
+    }
+
+    window.onload = initStory;
+  </script>
+</body>
+</html>
